@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Perhitungan Kredit ITC Multifinance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        /* Fallback styles jika Tailwind tidak load */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .text-center { text-align: center; }
+        .text-white { color: white; }
+        .bg-white { background-color: white; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .p-6 { padding: 1.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .grid { display: grid; }
+        .gap-6 { gap: 1.5rem; }
+        .hidden { display: none !important; }
+        
+        .luxury-gradient { 
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            min-height: 100vh;
+        }
+        
+        .gold-gradient { 
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #ffed4e 100%);
+        }
+        
+        .card-luxury { 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-luxury { 
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .input-luxury:focus { 
+            border-color: #d4af37; 
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+            background: rgba(255, 255, 255, 0.98);
+            outline: none;
+        }
+        
+        .btn-luxury {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.95) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .result-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .detail-section {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.05) 0%, rgba(102, 126, 234, 0.05) 100%);
+            border: 1px solid rgba(30, 60, 114, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header-section {
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .main-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #ffed4e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        
+        .divider {
+            width: 6rem;
+            height: 0.25rem;
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            margin: 0 auto;
+            border-radius: 9999px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+        
+        .icon-circle {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .gold-circle {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+        }
+        
+        .green-circle {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .purple-circle {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        
+        .orange-circle {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .error-message {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            color: #dc2626;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-title { font-size: 2rem; }
+            .subtitle { font-size: 1.25rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .results-grid { grid-template-columns: repeat(2, 1fr); }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .results-grid { grid-template-columns: 1fr; }
+            .card-luxury { padding: 1rem; }
+            .detail-section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body class="luxury-gradient">
+    <!-- Header Mewah -->
+    <div class="header-section">
+        <div class="header-overlay"></div>
+        <div class="container header-content">
+            <div class="text-center">
+                <h1 class="main-title">ITC MULTIFINANCE</h1>
+                <p class="subtitle">Kalkulator Perhitungan Kredit</p>
+                <div class="divider"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 1200px; position: relative; margin-top: -2rem;">
+        <!-- Form Input Mewah -->
+        <div class="card-luxury">
+            <div class="text-center" style="margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem; font-weight: bold; color: #374151; margin-bottom: 0.5rem;">Data Pembiayaan</h2>
+                <div class="divider" style="width: 4rem;"></div>
+            </div>
+            
+            <div class="form-grid">
+                <!-- OTR -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">OTR (On The Road)</label>
+                    <input type="text" id="otr" placeholder="Contoh: 150.000.000" class="input-luxury">
+                </div>
+
+                <!-- DP -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Down Payment (DP)</label>
+                    <div style="position: relative;">
+                        <input type="text" id="dp" placeholder="Minimal 30% dari OTR" class="input-luxury" style="padding-right: 5rem;">
+                        <button type="button" onclick="hitungDp30()" 
+                                style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(to right, #fbbf24, #f59e0b); color: white; padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: bold; border: none; cursor: pointer; transition: all 0.3s;">
+                            30%
+                        </button>
+                    </div>
+                    <p id="dpInfo" class="hidden" style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">
+                        💡 <span id="dpMinimal">-</span> (30% minimal)
+                    </p>
+                </div>
+
+                <!-- Jenis Unit -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Jenis Unit</label>
+                    <select id="jenisUnit" class="input-luxury">
+                        <option value="">Pilih Jenis Unit</option>
+                        <option value="Niaga">Niaga</option>
+                        <option value="Passenger">Passenger</option>
+                    </select>
+                </div>
+
+                <!-- Tahun Unit -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Tahun Unit</label>
+                    <select id="tahunUnit" class="input-luxury">
+                        <option value="">Pilih Tahun</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                        <option value="2008">2008</option>
+                        <option value="2007">2007</option>
+                        <option value="2006">2006</option>
+                        <option value="2005">2005</option>
+                        <option value="2004">2004</option>
+                    </select>
+                </div>
+
+                <!-- Tenor -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Tenor</label>
+                    <select id="tenor" class="input-luxury">
+                        <option value="">Pilih Tenor</option>
+                        <option value="12">12 Bulan</option>
+                        <option value="24">24 Bulan</option>
+                        <option value="36">36 Bulan</option>
+                        <option value="48">48 Bulan</option>
+                    </select>
+                </div>
+
+                <!-- Dealer -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Dealer</label>
+                    <select id="dealerSelect" onchange="handleDealerChange()" class="input-luxury">
+                        <option value="">Pilih Dealer</option>
+                        <option value="CV. CATUR ESA MOBILINDO">CV. CATUR ESA MOBILINDO</option>
+                        <option value="other">Dealer Lain</option>
+                    </select>
+                    <input type="text" id="dealerCustom" placeholder="Masukkan nama dealer..." class="input-luxury hidden" style="margin-top: 0.5rem;">
+                </div>
+
+                <!-- Biaya Provisi -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Biaya Provisi</label>
+                    <input type="text" id="biayaProvisi" placeholder="0" class="input-luxury">
+                </div>
+
+                <!-- Biaya Cover Area -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Biaya Cover Area</label>
+                    <input type="text" id="biayaCoverArea" placeholder="0" class="input-luxury">
+                </div>
+            </div>
+
+            <!-- Tombol Hitung Mewah -->
+            <div style="margin-top: 2.5rem; text-align: center;">
+                <button onclick="hitungPembiayaan()" class="btn-luxury">
+                    ✨ HITUNG PEMBIAYAAN ✨
+                </button>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden error-message animate-fade-in">
+        </div>
+
+        <!-- Hasil Perhitungan -->
+        <div id="hasilPerhitungan" class="hidden animate-fade-in">
+            <!-- Cards Hasil -->
+            <div class="results-grid">
+                <!-- Card Angsuran -->
+                <div class="result-card">
+                    <div class="icon-circle gold-circle">
+                        <svg style="width: 2rem; height: 2rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 0.875rem; font-weight: bold; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Angsuran Bulanan</h3>
+                    <p id="angsuranBulanan" style="font-size: 1.5rem; font-weight: bold; color: #2563eb;">-</p>
+                </div>
+
+                <!-- Card Administrasi -->
+                <div class="result-card">
+                    <div class="icon-circle green-circle">
+                        <svg style="width: 2rem; height: 2rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 0.875rem; font-weight: bold; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Administrasi Total</h3>
+                    <p id="administrasiTotal" style="font-size: 1.5rem; font-weight: bold; color: #059669;">-</p>
+                </div>
+
+                <!-- Card Total DP -->
+                <div class="result-card">
+                    <div class="icon-circle purple-circle">
+                        <svg style="width: 2rem; height: 2rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 0.875rem; font-weight: bold; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Total DP Pertama</h3>
+                    <p id="totalDpPertama" style="font-size: 1.5rem; font-weight: bold; color: #7c3aed;">-</p>
+                </div>
+
+                <!-- Card Estimasi Cair -->
+                <div class="result-card">
+                    <div class="icon-circle orange-circle">
+                        <svg style="width: 2rem; height: 2rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 0.875rem; font-weight: bold; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Estimasi Cair</h3>
+                    <p id="estimasiCair" style="font-size: 1.5rem; font-weight: bold; color: #d97706;">-</p>
+                </div>
+            </div>
+
+            <!-- Detail Perhitungan -->
+            <div class="detail-section">
+                <h3 style="font-size: 1.5rem; font-weight: bold; color: #374151; margin-bottom: 1.5rem; text-align: center;">
+                    📊 Detail Perhitungan
+                </h3>
+                
+                <div class="detail-grid">
+                    <!-- Kolom Kiri -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <h4 style="font-weight: bold; font-size: 1.125rem; color: #374151; margin-bottom: 1rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Data Input</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">OTR:</span>
+                                    <span id="detailOtr" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">DP:</span>
+                                    <span id="detailDp" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Jenis Unit:</span>
+                                    <span id="detailJenis" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Tahun:</span>
+                                    <span id="detailTahun" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Tenor:</span>
+                                    <span id="detailTenor" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Dealer:</span>
+                                    <span id="detailDealer" style="font-weight: 600;">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <h4 style="font-weight: bold; font-size: 1.125rem; color: #374151; margin-bottom: 1rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Rate & Markup</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Base Rate:</span>
+                                    <span id="detailBaseRate" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Markup Dealer:</span>
+                                    <span id="detailMarkup" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-top: 1px solid #e5e7eb; padding-top: 0.5rem;">
+                                    <span style="color: #374151; font-weight: 600;">Rate Final:</span>
+                                    <span id="detailRateFinal" style="font-weight: bold; color: #2563eb;">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom Kanan -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <h4 style="font-weight: bold; font-size: 1.125rem; color: #374151; margin-bottom: 1rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Perhitungan Pinjaman</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Pinjaman Pokok:</span>
+                                    <span id="detailPinjamanPokok" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Total Bunga:</span>
+                                    <span id="detailTotalBunga" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-top: 1px solid #e5e7eb; padding-top: 0.5rem;">
+                                    <span style="color: #374151; font-weight: 600;">Total Pinjaman:</span>
+                                    <span id="detailTotalPinjaman" style="font-weight: bold; color: #059669;">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <h4 style="font-weight: bold; font-size: 1.125rem; color: #374151; margin-bottom: 1rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;">Biaya Administrasi</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Admin Dasar:</span>
+                                    <span id="detailAdminDasar" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Absah BPKB:</span>
+                                    <span id="detailAbsah" style="font-weight: 600;">Rp 500.000</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Fiducia:</span>
+                                    <span id="detailFiducia" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Provisi:</span>
+                                    <span id="detailProvisi" style="font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #6b7280;">Cover Area:</span>
+                                    <span id="detailCoverArea" style="font-weight: 600;">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rumus Perhitungan -->
+                <div style="margin-top: 2rem; background: linear-gradient(to right, #eff6ff, #f3e8ff); border-radius: 0.75rem; padding: 1.5rem;">
+                    <h4 style="font-weight: bold; font-size: 1.125rem; color: #374151; margin-bottom: 1rem; text-align: center;">🧮 Rumus Perhitungan</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; font-size: 0.875rem;">
+                        <div class="bg-white rounded-lg p-4">
+                            <p style="font-weight: 600; color: #2563eb; margin-bottom: 0.5rem;">Pinjaman Pokok:</p>
+                            <p style="font-family: monospace; background: #f3f4f6; padding: 0.5rem; border-radius: 0.25rem;">OTR - DP</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <p style="font-weight: 600; color: #2563eb; margin-bottom: 0.5rem;">Total Bunga:</p>
+                            <p style="font-family: monospace; background: #f3f4f6; padding: 0.5rem; border-radius: 0.25rem;">Pinjaman Pokok × (Rate/100) × (Tenor/12)</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <p style="font-weight: 600; color: #2563eb; margin-bottom: 0.5rem;">Angsuran:</p>
+                            <p style="font-family: monospace; background: #f3f4f6; padding: 0.5rem; border-radius: 0.25rem;">(Pinjaman Pokok + Total Bunga) / Tenor</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <p style="font-weight: 600; color: #2563eb; margin-bottom: 0.5rem;">Total DP Pertama:</p>
+                            <p style="font-family: monospace; background: #f3f4f6; padding: 0.5rem; border-radius: 0.25rem;">Angsuran + Administrasi + DP</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Copy -->
+            <div style="text-align: center;">
+                <button onclick="copyHasil()" 
+                        style="background: linear-gradient(to right, #374151, #1f2937); color: white; padding: 1rem 2rem; border-radius: 0.75rem; font-weight: bold; font-size: 1.125rem; border: none; cursor: pointer; transition: all 0.3s; transform: scale(1);">
+                    📋 COPY HASIL PERHITUNGAN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Master Rate Table - Base rate tahunan (flat p.a.)
+        const masterRate = {
+            "Niaga": {
+                "2024": { "12": 10.79, "24": 11.63, "36": 12.17, "48": 12.63 },
+                "2023": { "12": 10.79, "24": 11.63, "36": 12.17, "48": 12.63 },
+                "2022": { "12": 10.79, "24": 11.63, "36": 12.17, "48": 12.63 },
+                "2021": { "12": 10.79, "24": 11.63, "36": 12.17, "48": 12.63 },
+                "2020": { "12": 10.79, "24": 11.63, "36": 12.17, "48": 12.63 },
+                "2019": { "12": 10.79, "24": 11.63, "36": 12.17, "48": 12.63 },
+                "2018": { "12": 11.03, "24": 11.90, "36": 12.46, "48": 12.93 },
+                "2017": { "12": 11.03, "24": 11.90, "36": 12.46, "48": 12.93 },
+                "2016": { "12": 11.27, "24": 12.17, "36": 12.83, "48": 13.76 },
+                "2015": { "12": 11.27, "24": 12.17, "36": 12.83, "48": 13.76 },
+                "2014": { "12": 11.27, "24": 12.17, "36": 12.83, "48": 13.76 },
+                "2013": { "12": 11.49, "24": 12.47, "36": 13.12, "48": 13.98 },
+                "2012": { "12": 11.49, "24": 12.47, "36": 13.12, "48": 13.98 },
+                "2011": { "12": 11.49, "24": 12.47, "36": 13.12, "48": 13.98 },
+                "2010": { "12": 11.73, "24": 13.47, "36": 14.12, "48": 0 },
+                "2009": { "12": 12.53, "24": 12.53, "36": 14.62, "48": 0 },
+                "2008": { "12": 12.53, "24": 12.53, "36": 14.62, "48": 0 },
+                "2007": { "12": 12.73, "24": 12.73, "36": 15.12, "48": 0 },
+                "2006": { "12": 12.73, "24": 12.73, "36": 15.12, "48": 0 },
+                "2005": { "12": 13.23, "24": 13.23, "36": 15.62, "48": 0 },
+                "2004": { "12": 13.23, "24": 13.23, "36": 15.62, "48": 0 }
+            },
+            "Passenger": {
+                "2024": { "12": 7.5, "24": 8.0, "36": 8.5, "48": 9.0 },
+                "2023": { "12": 8.0, "24": 8.5, "36": 9.0, "48": 9.5 },
+                "2022": { "12": 8.5, "24": 9.0, "36": 9.5, "48": 10.0 },
+                "2021": { "12": 9.0, "24": 9.5, "36": 10.0, "48": 10.5 },
+                "2020": { "12": 9.5, "24": 10.0, "36": 10.5, "48": 11.0 },
+                "2019": { "12": 10.0, "24": 10.5, "36": 11.0, "48": 11.5 },
+                "2018": { "12": 10.5, "24": 11.0, "36": 11.5, "48": 12.0 },
+                "2017": { "12": 11.0, "24": 11.5, "36": 12.0, "48": 12.5 },
+                "2016": { "12": 11.5, "24": 12.0, "36": 12.5, "48": 13.0 },
+                "2015": { "12": 12.0, "24": 12.5, "36": 13.0, "48": 13.5 },
+                "2014": { "12": 12.5, "24": 13.0, "36": 13.5, "48": 14.0 },
+                "2013": { "12": 13.0, "24": 13.5, "36": 14.0, "48": 14.5 },
+                "2012": { "12": 13.5, "24": 14.0, "36": 14.5, "48": 15.0 },
+                "2011": { "12": 14.0, "24": 14.5, "36": 15.0, "48": 15.5 },
+                "2010": { "12": 14.5, "24": 15.0, "36": 15.5, "48": 16.0 },
+                "2009": { "12": 15.0, "24": 15.5, "36": 16.0, "48": 16.5 },
+                "2008": { "12": 15.5, "24": 16.0, "36": 16.5, "48": 17.0 },
+                "2007": { "12": 16.0, "24": 16.5, "36": 17.0, "48": 17.5 },
+                "2006": { "12": 16.5, "24": 17.0, "36": 17.5, "48": 18.0 },
+                "2005": { "12": 17.0, "24": 17.5, "36": 18.0, "48": 18.5 },
+                "2004": { "12": 17.5, "24": 18.0, "36": 18.5, "48": 19.0 }
+            }
+        };
+
+        // Biaya Admin Dasar berdasarkan tenor
+        const biayaAdminDasar = {
+            "12": 1750000,
+            "24": 1800000,
+            "36": 2000000,
+            "48": 2200000
+        };
+
+        // Biaya Fiducia berdasarkan OTR
+        function getBiayaFiducia(otr) {
+            if (otr < 50000000) return 128000;
+            else if (otr <= 100000000) return 184000;
+            else if (otr <= 250000000) return 289000;
+            else if (otr <= 300000000) return 545000;
+            else if (otr <= 1000000000) return 950000;
+            else return 1906000;
+        }
+
+        // Format Rupiah
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(angka);
+        }
+
+        // Parse input angka
+        function parseNumber(str) {
+            return parseInt(str.replace(/[^\d]/g, '')) || 0;
+        }
+
+        // Format input saat mengetik
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            if (input.id === 'otr' || input.id === 'dp' || input.id === 'biayaProvisi' || input.id === 'biayaCoverArea') {
+                input.addEventListener('input', function() {
+                    let value = parseNumber(this.value);
+                    if (value > 0) {
+                        this.value = value.toLocaleString('id-ID');
+                    }
+                    
+                    // Update info DP minimal saat OTR berubah
+                    if (this.id === 'otr') {
+                        updateDpInfo();
+                    }
+                });
+            }
+        });
+
+        // Fungsi untuk update info DP minimal
+        function updateDpInfo() {
+            const otr = parseNumber(document.getElementById('otr').value);
+            const dpInfo = document.getElementById('dpInfo');
+            const dpMinimal = document.getElementById('dpMinimal');
+            
+            if (otr > 0) {
+                const minDp = otr * 0.3;
+                dpMinimal.textContent = formatRupiah(minDp);
+                dpInfo.classList.remove('hidden');
+            } else {
+                dpInfo.classList.add('hidden');
+            }
+        }
+
+        // Fungsi untuk auto-calculate DP 30%
+        function hitungDp30() {
+            const otr = parseNumber(document.getElementById('otr').value);
+            const dpInput = document.getElementById('dp');
+            
+            if (otr > 0) {
+                const dp30 = otr * 0.3;
+                dpInput.value = dp30.toLocaleString('id-ID');
+                
+                // Animasi feedback
+                dpInput.style.borderColor = '#d4af37';
+                dpInput.style.backgroundColor = '#fffbf0';
+                setTimeout(() => {
+                    dpInput.style.borderColor = '';
+                    dpInput.style.backgroundColor = '';
+                }, 1000);
+            } else {
+                alert('⚠️ Masukkan OTR terlebih dahulu!');
+                document.getElementById('otr').focus();
+            }
+        }
+
+        // Fungsi untuk handle perubahan dealer
+        function handleDealerChange() {
+            const dealerSelect = document.getElementById('dealerSelect');
+            const dealerCustom = document.getElementById('dealerCustom');
+            
+            if (dealerSelect.value === 'other') {
+                dealerCustom.classList.remove('hidden');
+                dealerCustom.focus();
+            } else {
+                dealerCustom.classList.add('hidden');
+                dealerCustom.value = '';
+            }
+        }
+
+        // Fungsi untuk mendapatkan nama dealer
+        function getDealerName() {
+            const dealerSelect = document.getElementById('dealerSelect');
+            const dealerCustom = document.getElementById('dealerCustom');
+            
+            if (dealerSelect.value === 'other') {
+                return dealerCustom.value.trim();
+            } else {
+                return dealerSelect.value;
+            }
+        }
+
+        function hitungPembiayaan() {
+            // Reset error dan hasil
+            document.getElementById('errorMessage').classList.add('hidden');
+            document.getElementById('hasilPerhitungan').classList.add('hidden');
+
+            // Ambil nilai input
+            const otr = parseNumber(document.getElementById('otr').value);
+            const dp = parseNumber(document.getElementById('dp').value);
+            const jenisUnit = document.getElementById('jenisUnit').value;
+            const tahunUnit = document.getElementById('tahunUnit').value;
+            const tenor = document.getElementById('tenor').value;
+            const dealer = getDealerName();
+            const biayaProvisi = parseNumber(document.getElementById('biayaProvisi').value);
+            const biayaCoverArea = parseNumber(document.getElementById('biayaCoverArea').value);
+
+            // Validasi input
+            if (!otr || !dp || !jenisUnit || !tahunUnit || !tenor || !dealer) {
+                showError('❌ Mohon lengkapi semua field yang diperlukan!');
+                return;
+            }
+
+            // Validasi DP minimal 30%
+            const minDp = otr * 0.3;
+            if (dp < minDp) {
+                showError(`❌ DP minimal 30% dari OTR (${formatRupiah(minDp)})`);
+                return;
+            }
+
+            // Cari base rate
+            const baseRate = masterRate[jenisUnit]?.[tahunUnit]?.[tenor];
+            if (!baseRate || baseRate === 0) {
+                showError('❌ Tenor tidak tersedia untuk kombinasi Jenis Unit dan Tahun yang dipilih!');
+                return;
+            }
+
+            // Aturan markup dealer (upping bunga)
+            const markupDealer = dealer === 'CV. CATUR ESA MOBILINDO' ? 1.5 : 1.75;
+            const rateTahunanFinal = baseRate + markupDealer;
+
+            // Perhitungan
+            const pinjamanPokok = otr - dp;
+            const totalBunga = pinjamanPokok * (rateTahunanFinal / 100) * (parseInt(tenor) / 12);
+            const totalPinjaman = pinjamanPokok + totalBunga;
+            const angsuran = totalPinjaman / parseInt(tenor);
+
+            // Biaya administrasi
+            const adminDasar = biayaAdminDasar[tenor];
+            const biayaAbsahBpkb = 500000;
+            const biayaFiducia = getBiayaFiducia(otr);
+            const administrasiTotal = adminDasar + biayaAbsahBpkb + biayaFiducia + biayaProvisi + biayaCoverArea;
+
+            // Total DP pertama dan estimasi cair
+            const totalDpPertama = angsuran + administrasiTotal + dp;
+            const estimasiCair = pinjamanPokok - administrasiTotal;
+
+            // Tampilkan hasil
+            document.getElementById('angsuranBulanan').textContent = formatRupiah(angsuran);
+            document.getElementById('administrasiTotal').textContent = formatRupiah(administrasiTotal);
+            document.getElementById('totalDpPertama').textContent = formatRupiah(totalDpPertama);
+            document.getElementById('estimasiCair').textContent = formatRupiah(estimasiCair);
+
+            // Tampilkan detail perhitungan
+            document.getElementById('detailOtr').textContent = formatRupiah(otr);
+            document.getElementById('detailDp').textContent = formatRupiah(dp);
+            document.getElementById('detailJenis').textContent = jenisUnit;
+            document.getElementById('detailTahun').textContent = tahunUnit;
+            document.getElementById('detailTenor').textContent = tenor + ' bulan';
+            document.getElementById('detailDealer').textContent = dealer;
+            document.getElementById('detailBaseRate').textContent = baseRate + '%';
+            document.getElementById('detailMarkup').textContent = '+' + markupDealer + '%';
+            document.getElementById('detailRateFinal').textContent = rateTahunanFinal + '%';
+            document.getElementById('detailPinjamanPokok').textContent = formatRupiah(pinjamanPokok);
+            document.getElementById('detailTotalBunga').textContent = formatRupiah(totalBunga);
+            document.getElementById('detailTotalPinjaman').textContent = formatRupiah(totalPinjaman);
+            document.getElementById('detailAdminDasar').textContent = formatRupiah(adminDasar);
+            document.getElementById('detailFiducia').textContent = formatRupiah(biayaFiducia);
+            document.getElementById('detailProvisi').textContent = formatRupiah(biayaProvisi);
+            document.getElementById('detailCoverArea').textContent = formatRupiah(biayaCoverArea);
+
+            document.getElementById('hasilPerhitungan').classList.remove('hidden');
+
+            // Simpan hasil untuk copy
+            window.hasilPerhitungan = {
+                otr: formatRupiah(otr),
+                dp: formatRupiah(dp),
+                jenisUnit,
+                tahunUnit,
+                tenor: tenor + ' bulan',
+                dealer,
+                baseRate: baseRate + '%',
+                markupDealer: '+' + markupDealer + '%',
+                rateFinal: rateTahunanFinal + '%',
+                pinjamanPokok: formatRupiah(pinjamanPokok),
+                totalBunga: formatRupiah(totalBunga),
+                totalPinjaman: formatRupiah(totalPinjaman),
+                angsuran: formatRupiah(angsuran),
+                adminDasar: formatRupiah(adminDasar),
+                biayaFiducia: formatRupiah(biayaFiducia),
+                biayaProvisi: formatRupiah(biayaProvisi),
+                biayaCoverArea: formatRupiah(biayaCoverArea),
+                administrasiTotal: formatRupiah(administrasiTotal),
+                totalDpPertama: formatRupiah(totalDpPertama),
+                estimasiCair: formatRupiah(estimasiCair)
+            };
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            errorDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyHasil() {
+            if (!window.hasilPerhitungan) return;
+
+            const hasil = window.hasilPerhitungan;
+            const text = `
+═══════════════════════════════════════════════
+    HASIL PERHITUNGAN KREDIT ITC MULTIFINANCE
+═══════════════════════════════════════════════
+
+📋 DATA KENDARAAN:
+• OTR                : ${hasil.otr}
+• DP                 : ${hasil.dp}
+• Jenis Unit         : ${hasil.jenisUnit}
+• Tahun              : ${hasil.tahunUnit}
+• Tenor              : ${hasil.tenor}
+• Dealer             : ${hasil.dealer}
+
+📊 RATE & MARKUP:
+• Base Rate          : ${hasil.baseRate}
+• Markup Dealer      : ${hasil.markupDealer}
+• Rate Final         : ${hasil.rateFinal}
+
+💰 PERHITUNGAN PINJAMAN:
+• Pinjaman Pokok     : ${hasil.pinjamanPokok}
+• Total Bunga        : ${hasil.totalBunga}
+• Total Pinjaman     : ${hasil.totalPinjaman}
+
+📄 BIAYA ADMINISTRASI:
+• Admin Dasar        : ${hasil.adminDasar}
+• Absah BPKB         : Rp 500.000
+• Fiducia            : ${hasil.biayaFiducia}
+• Provisi            : ${hasil.biayaProvisi}
+• Cover Area         : ${hasil.biayaCoverArea}
+
+✨ HASIL AKHIR:
+• Angsuran Bulanan   : ${hasil.angsuran}
+• Administrasi Total : ${hasil.administrasiTotal}
+• Total DP Pertama   : ${hasil.totalDpPertama}
+• Estimasi Cair      : ${hasil.estimasiCair}
+
+═══════════════════════════════════════════════
+Dihitung pada: ${new Date().toLocaleString('id-ID')}
+ITC Multifinance - Kalkulator Perhitungan Kredit
+═══════════════════════════════════════════════
+            `.trim();
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Hasil perhitungan berhasil disalin ke clipboard!');
+            }).catch(() => {
+                // Fallback untuk browser yang tidak support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ Hasil perhitungan berhasil disalin ke clipboard!');
+            });
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e8ef7cc2095d5e',t:'MTc1NTA5NTY5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
